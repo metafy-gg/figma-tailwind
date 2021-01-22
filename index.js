@@ -66,9 +66,11 @@
   const targetSelector = '[class^="raw_components--panel--"] [class^="scroll_container--innerScrollContainer"] > div';
   const lineSelector = '[class^="css_code_panel--cssLine"]';
 
-  const observer = new MutationObserver(appendTailwindClassnames);
+  const observer = new MutationObserver(appendTailwindClasses);
+
   const ignoreClasses = [/absolute/, /h-[0-9]+/, /flex/, /items-center/, /relative/, /text-center/];
-  function appendTailwindClassnames() {
+  const classImportance = [/font-.+/, /text-.+/, /bg-.+/, /uppercase/, /rounded-.+/, /tracking-.+/, /leading-.+/];
+  function appendTailwindClasses() {
     /* Stop MutationObserver while this function runs, and re-enable it at the end. */
     observer.disconnect();
 
@@ -79,7 +81,6 @@
     }
 
     const figmaRules = Array.from(document.querySelectorAll(lineSelector)).map(el => el.textContent);
-    const classImportance = [/font-.+/, /text-.+/, /bg-.+/, /uppercase/, /rounded-.+/, /tracking-.+/, /leading-.+/];
     const classes = figmaRules
       .map(findClass)
       .filter(Boolean)
@@ -106,5 +107,5 @@
       subtree: true,
     });
   }
-  appendTailwindClassnames();
+  appendTailwindClasses();
 })();
